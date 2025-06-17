@@ -19,7 +19,7 @@ See issue: https://github.com/allenai/Earth-System-Feedback/issues/47
    pip install -r requirements.txt
    ```
 
-4. Create a `api_key.txt` file and paste your API key inside. 
+4. Create a `api_key.txt` file and paste your ESS API key inside. 
 
 5. Set the variables `new_efgs`, `project_id` and `metadata_name` at the beginning of the script
 

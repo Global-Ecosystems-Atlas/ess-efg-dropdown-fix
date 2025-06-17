@@ -1,7 +1,7 @@
 import os
 import requests
 import sys
-
+from pprint import pprint
 
 def main():
 
@@ -22,7 +22,8 @@ def main():
     headers = {'Authorization': f'Bearer {api_key}', 'Content-Type': 'application/json'}
 
 
-    # Retrieve the ID of the metadata field "IUCN EFG Code at 100m scale" (name = iucn_efg_code_100m)
+    # Retrieve the ID of the metadata field
+    # /!\ At least one annotation must have been defined beforehand /!\
     r = requests.get(f'https://earth-system-studio.allen.ai/api/v1/projects/{project_id}/metadata-report', headers=headers)
     r.raise_for_status()
 
@@ -36,16 +37,19 @@ def main():
             break
 
     if metadata_id is None:
-        print("Identifier for the metadata 'IUCN EFG Code at 100m' not found.")
+        print(f"Identifier for the metadata '{metadata_name}' not found.")
         sys.exit(1)
 
     
-    # Retrieve the metadata field "IUCN EFG Code at 100m scale" 
+    # Retrieve the metadata field 
     r = requests.get(f'https://earth-system-studio.allen.ai/api/v1/annotation_metadata_fields/{metadata_id}', headers=headers)
     r.raise_for_status()
 
     metadata = r.json()
-
+    
+    if metadata.get('data_type') != 'enum':
+        print("The metadata you are trying to modify is not a dropdown list.")
+        sys.exit(1)
 
     # Add new EFG codes to the metadata field
     added_efgs = []
