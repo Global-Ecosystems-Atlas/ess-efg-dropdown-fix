@@ -21,7 +21,7 @@ See issue: https://github.com/allenai/Earth-System-Feedback/issues/47
 
 4. Create a `api_key.txt` file and paste your API key inside. 
 
-5. Set the variables `new_efgs` and `project_id` at the beginning of the script
+5. Set the variables `new_efgs`, `project_id` and `metadata_name` at the beginning of the script
 
 6. Run the script. 
     ```bash

@@ -8,6 +8,7 @@ def main():
     # Define parameters
     new_efgs = ['F_1_3_FREEZE-THAW_RIVERS_AND_STREAMS']  # e.g: ['F_1_3_FREEZE-THAW_RIVERS_AND_STREAMS'] or ['FM_1_3_INTERMITTENTLY_CLOSED_AND_OPEN_LAKES_AND_LAGOONS, MT_1_1_ROCKY_SHORELINES']
     project_id = 'baa637ae-4ed6-4989-9e31-6829379238ff'
+    metadata_name = 'iucn_efg_code_100m'  # e.g: 'efg_100m' or 'efg2_10m'
 
 
     # Set up the API key and request headers
@@ -27,20 +28,20 @@ def main():
 
     metadata_list = r.json()
 
-    efg_100m_id = None
+    metadata_id = None
 
     for item in metadata_list:
-        if item.get('metadata_name') == 'iucn_efg_code_100m':
-            efg_100m_id = item.get('metadata_id')
+        if item.get('metadata_name') == metadata_name:
+            metadata_id = item.get('metadata_id')
             break
 
-    if efg_100m_id is None:
+    if metadata_id is None:
         print("Identifier for the metadata 'IUCN EFG Code at 100m' not found.")
         sys.exit(1)
 
     
     # Retrieve the metadata field "IUCN EFG Code at 100m scale" 
-    r = requests.get(f'https://earth-system-studio.allen.ai/api/v1/annotation_metadata_fields/{efg_100m_id}', headers=headers)
+    r = requests.get(f'https://earth-system-studio.allen.ai/api/v1/annotation_metadata_fields/{metadata_id}', headers=headers)
     r.raise_for_status()
 
     metadata = r.json()
@@ -61,7 +62,7 @@ def main():
 
     
     # Update the metadata field
-    response = requests.put(f'https://earth-system-studio.allen.ai/api/v1/annotation_metadata_fields/{efg_100m_id}', json=metadata, headers=headers)
+    response = requests.put(f'https://earth-system-studio.allen.ai/api/v1/annotation_metadata_fields/{metadata_id}', json=metadata, headers=headers)
 
     if response.status_code == 200:
         print(f"Metadata updated successfully.")
